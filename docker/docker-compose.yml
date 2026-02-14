@@ -1,0 +1,54 @@
+services:
+  influxdb3:
+    image: influxdb:3.0.3-core
+    container_name: influxdb3
+    command: >
+      influxdb3 serve
+      --node-id=node0
+      --object-store=file
+      --data-dir=/var/lib/influxdb3
+      --http-bind=0.0.0.0:8181
+    ports:
+      - "8181:8181"
+    volumes:
+      - influxdb3_data:/var/lib/influxdb3
+    restart: unless-stopped
+    networks:
+      - monitoring_net
+
+  influxdb3-ui:
+    image: influxdata/influxdb3-ui:latest
+    container_name: influxdb3-ui
+    ports:
+      - "8080:80"
+    environment:
+      INFLUXDB3_URL: http://influxdb3:8181
+    depends_on:
+      - influxdb3
+    restart: unless-stopped
+    networks:
+      - monitoring_net
+
+  grafana:
+    image: grafana/grafana:11.5.0
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin12345
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - influxdb3
+    restart: unless-stopped
+    networks:
+      - monitoring_net
+
+volumes:
+  influxdb3_data:
+  grafana_data:
+
+networks:
+  monitoring_net:
+    driver: bridge

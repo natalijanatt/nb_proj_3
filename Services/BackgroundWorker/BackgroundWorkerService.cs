@@ -21,14 +21,17 @@ public class BackgroundWorkerService : BackgroundService
     {
         while(!stoppingToken.IsCancellationRequested)
         {
+            List<Task> processTasks = [];
+            
             foreach (var processService in _processServices)
             {
-                await processService.Process();
+                var task = processService.Process();
+                processTasks.Add(task);
             }
+            
+            await Task.WhenAll(processTasks);
 
             await Task.Delay(1000, stoppingToken);
         }
     }
-
-
 }

@@ -1,0 +1,16 @@
+apiVersion: 1
+
+datasources:
+  - name: InfluxDB3
+    type: influxdb
+    access: proxy
+    isDefault: true
+    url: http://influxdb3:8181
+
+    jsonData:
+      version: SQL
+      httpMode: POST
+      dbName: system_metrics
+      insecureGrpc: true
+    secureJsonData:
+      token: "apiv3_7-pFfUVHWoRQYOSeiF5dLnJfZqXI99-4c2yYkUu3zQGseRxuvCpbp3EsTGgDMmUEyBSAzB-4owtc2Y7-y-n7WA"

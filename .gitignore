@@ -50,7 +50,6 @@ packages/
 appsettings.Development.json
 appsettings.Local.json
 .env
-.env.*
 
 ############################
 # Docker

@@ -1,3 +1,30 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using Hardware.Info;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using WorkspaceMonitor.Services;
+using WorkspaceMonitor.Services.BackgroundWorker;
+using WorkspaceMonitor.Services.HwStatsProvider;
+using WorkspaceMonitor.Services.Processing;
+using WorkspaceMonitor.Services.SystemInfo;
 
-Console.WriteLine("Hello, World!");
+DotNetEnv.Env.Load();
+
+var builder = Host.CreateDefaultBuilder(args);
+
+//servisi
+builder.ConfigureServices(services =>
+{
+    services.AddSingleton<HardwareInfo>();
+    
+    services.AddSingleton<IHwStatsProvider, HwStatsProvider>();
+    services.AddSingleton<SystemInfoService>();
+    services.AddSingleton<InfluxDbService>();
+
+    services.AddSingleton<CpuProcessService>();
+
+    services.AddHostedService<BackgroundWorkerService>();
+});
+
+var app = builder.Build();
+
+await app.RunAsync();

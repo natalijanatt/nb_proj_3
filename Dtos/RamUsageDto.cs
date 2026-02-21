@@ -1,6 +1,6 @@
 namespace WorkspaceMonitor.Dtos;
 
 public record RamUsageDto(
-    ulong PercentUsage,
+    double PercentUsage,
     long Timestamp
     );

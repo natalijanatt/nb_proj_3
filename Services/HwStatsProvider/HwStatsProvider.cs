@@ -22,12 +22,14 @@ public class HwStatsProvider : IHwStatsProvider
         _hardwareInfo.RefreshCPUList();
     }
 
-    public ulong GetRamUsage()
+    public double GetRamUsage()
     {  
         var available = _hardwareInfo.MemoryStatus.AvailablePhysical;
         var total = _hardwareInfo.MemoryStatus.TotalPhysical;
         
-        return (ulong) ((1.0 - available / (double)total) * 100.0);
+        var usage = (1.0 - available / (double)total) * 100.0;
+        
+        return Math.Round(usage, 2);
     }
 
     public void RefreshRam()

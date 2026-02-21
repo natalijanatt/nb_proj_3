@@ -6,6 +6,6 @@ public interface IHwStatsProvider
 
     void RefreshCpu();
     
-    ulong GetRamUsage();
+    double GetRamUsage();
     void RefreshRam();
 }

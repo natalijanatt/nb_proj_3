@@ -21,4 +21,17 @@ public class HwStatsProvider : IHwStatsProvider
     {
         _hardwareInfo.RefreshCPUList();
     }
+
+    public ulong GetRamUsage()
+    {  
+        var available = _hardwareInfo.MemoryStatus.AvailablePhysical;
+        var total = _hardwareInfo.MemoryStatus.TotalPhysical;
+        
+        return (ulong) ((1.0 - available / (double)total) * 100.0);
+    }
+
+    public void RefreshRam()
+    {
+        _hardwareInfo.RefreshMemoryStatus();
+    }
 }

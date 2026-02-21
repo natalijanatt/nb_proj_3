@@ -9,12 +9,14 @@ public class BackgroundWorkerService : BackgroundService
     private readonly ICollection<IProcessService> _processServices;
 
     public BackgroundWorkerService(
-        CpuProcessService cpuProcessService
+        CpuProcessService cpuProcessService,
+        RamProcessService ramProcessService
         )
     {
         _processServices = new List<IProcessService>();
         
         _processServices.Add(cpuProcessService);
+        _processServices.Add(ramProcessService);
     }
     
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

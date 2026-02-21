@@ -61,6 +61,16 @@ public class InfluxDbService
         
     }
 
+    public async Task WriteRamUsageAsync(RamUsageDto data)
+    {
+        var point = PointData
+            .Measurement("ram")
+            .SetField("percent_usage", data.PercentUsage)
+            .SetTimestamp(DateTimeOffset.FromUnixTimeSeconds(data.Timestamp));
+        
+        await _client.WritePointAsync(point);
+    }
+
     public async Task<string> QuerySqlAsync(string sql)
     {
         Console.WriteLine($"SQL koji se izvrsava: {sql}");

@@ -28,6 +28,7 @@ builder.ConfigureServices(services =>
 
     services.AddSingleton<CpuProcessService>();
     services.AddSingleton<RamProcessService>();
+    services.AddSingleton<BatteryProcessService>();
 
     services.AddHostedService<BackgroundWorkerService>();
 });

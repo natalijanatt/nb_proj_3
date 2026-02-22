@@ -8,4 +8,14 @@ public interface IHwStatsProvider
     
     double GetRamUsage();
     void RefreshRam();
+
+    void RefreshBattery();
+
+    ushort GetBatteryChargeRemaining(int index);
+
+    ushort GetBatteryStatus(int index);
+
+    uint GetBatteryEstimatedRunTime(int index);
+
+    uint GetBatteryTimeToFullCharge(int index);
 }

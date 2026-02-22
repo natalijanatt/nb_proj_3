@@ -36,4 +36,29 @@ public class HwStatsProvider : IHwStatsProvider
     {
         _hardwareInfo.RefreshMemoryStatus();
     }
+
+    public void RefreshBattery()
+    {
+        _hardwareInfo.RefreshBatteryList();
+    }
+
+    public ushort GetBatteryChargeRemaining(int index)
+    {
+        return _hardwareInfo.BatteryList[index].EstimatedChargeRemaining;
+    }
+
+    public ushort GetBatteryStatus(int index)
+    {
+        return _hardwareInfo.BatteryList[index].BatteryStatus;
+    }
+
+    public uint GetBatteryEstimatedRunTime(int index)
+    {
+        return _hardwareInfo.BatteryList[index].EstimatedRunTime;
+    }
+
+    public uint GetBatteryTimeToFullCharge(int index)
+    {
+        return _hardwareInfo.BatteryList[index].TimeToFullCharge;
+    }
 }

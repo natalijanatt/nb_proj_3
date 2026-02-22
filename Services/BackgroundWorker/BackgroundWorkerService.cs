@@ -10,12 +10,14 @@ public class BackgroundWorkerService : BackgroundService
 
     public BackgroundWorkerService(
         CpuProcessService cpuProcessService,
-        RamProcessService ramProcessService
+        RamProcessService ramProcessService,
+        BatteryProcessService batteryProcessService
         )
     {
         _processServices = new List<IProcessService>();
-        
+
         _processServices.Add(cpuProcessService);
+        _processServices.Add(batteryProcessService);
         _processServices.Add(ramProcessService);
     }
     

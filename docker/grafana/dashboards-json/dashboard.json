@@ -64,6 +64,7 @@
               "mode": "off"
             }
           },
+          "displayName": "${__field.labels.core}",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -112,7 +113,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  date_bin(INTERVAL '5 seconds', \"time\", TIMESTAMP '1970-01-01T00:00:00Z') AS \"time\",\r\n\r\n  AVG(CASE WHEN \"core_num\" = 0 THEN \"percent_usage\" END) AS \"core 0\",\r\n  AVG(CASE WHEN \"core_num\" = 1 THEN \"percent_usage\" END) AS \"core 1\",\r\n  AVG(CASE WHEN \"core_num\" = 2 THEN \"percent_usage\" END) AS \"core 2\",\r\n  AVG(CASE WHEN \"core_num\" = 3 THEN \"percent_usage\" END) AS \"core 3\",\r\n  AVG(CASE WHEN \"core_num\" = 4 THEN \"percent_usage\" END) AS \"core 4\",\r\n  AVG(CASE WHEN \"core_num\" = 5 THEN \"percent_usage\" END) AS \"core 5\",\r\n  AVG(CASE WHEN \"core_num\" = 6 THEN \"percent_usage\" END) AS \"core 6\",\r\n  AVG(CASE WHEN \"core_num\" = 7 THEN \"percent_usage\" END) AS \"core 7\"\r\n\r\nFROM \"cpu\"\r\nWHERE\r\n  \"time\" >= $__timeFrom AND \"time\" <= $__timeTo\r\nGROUP BY 1\r\nORDER BY 1;",
+          "rawSql": "SELECT\r\n  date_bin(\r\n    INTERVAL '5 seconds',\r\n    \"time\",\r\n    TIMESTAMP '1970-01-01T00:00:00Z'\r\n  ) AS \"time\",\r\n  CONCAT('Core ', LPAD(CAST(\"core_num\" AS VARCHAR), 2, '0')) AS \"core\",\r\n  AVG(\"percent_usage\") AS \"value\"\r\nFROM \"cpu\"\r\nWHERE\r\n  \"time\" >= $__timeFrom\r\n  AND \"time\" <= $__timeTo\r\n  AND \"core_num\" IN (${cpu_core_num:csv})\r\nGROUP BY 1, 2\r\nORDER BY 1, 2;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -200,6 +201,14 @@
         }
       ],
       "title": "CPU Usage Per Core",
+      "transformations": [
+        {
+          "id": "prepareTimeSeries",
+          "options": {
+            "format": "multi"
+          }
+        }
+      ],
       "type": "timeseries"
     }
   ],
@@ -262,6 +271,6 @@
   "timezone": "browser",
   "title": "CPU - prototype",
   "uid": "dfe0tda9jwvswf",
-  "version": 4,
+  "version": 5,
   "weekStart": ""
 }

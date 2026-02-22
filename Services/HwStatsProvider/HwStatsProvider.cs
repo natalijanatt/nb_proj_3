@@ -29,12 +29,12 @@ public class HwStatsProvider : IHwStatsProvider
         _hardwareInfo.RefreshDriveList();
     }
 
-    public (double Usage, string Name) GetDiskUsageWithName(int diskNum)
+    public (double Usage, string Name,double UsageGB ) GetDiskUsageWithName(int diskNum)
     {
 
         if (diskNum < 0 || diskNum >= _hardwareInfo.DriveList.Count)
         {
-            return (0, "Unknown Drive");
+            return (0, "Unknown Drive",0);
         }
 
         var physicalDrive = _hardwareInfo.DriveList[diskNum];
@@ -66,11 +66,14 @@ public class HwStatsProvider : IHwStatsProvider
         long totalSize = myLogicalDrives.Sum(d => d.TotalSize);
         long totalFree = myLogicalDrives.Sum(d => d.AvailableFreeSpace);
 
-        if (totalSize == 0) return (0, physicalDrive.Name);
+        if (totalSize == 0) return (0, physicalDrive.Name,0);
 
         var usage = (1.0 - (double)totalFree / totalSize) * 100.0;
 
-        return (Math.Round(usage, 2), physicalDrive.Name);
+        long usedBytes = totalSize - totalFree;
+        double usedGb = usedBytes / (1024.0 * 1024.0 * 1024.0);
+
+        return (Math.Round(usage, 2), physicalDrive.Name,Math.Round(usedGb, 2));
 
     }
 }

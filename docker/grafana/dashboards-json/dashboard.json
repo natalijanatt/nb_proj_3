@@ -1,0 +1,267 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P2A13252C41BAC6F2"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.0",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P2A13252C41BAC6F2"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  date_bin(INTERVAL '5 seconds', \"time\", TIMESTAMP '1970-01-01T00:00:00Z') AS \"time\",\r\n\r\n  AVG(CASE WHEN \"core_num\" = 0 THEN \"percent_usage\" END) AS \"core 0\",\r\n  AVG(CASE WHEN \"core_num\" = 1 THEN \"percent_usage\" END) AS \"core 1\",\r\n  AVG(CASE WHEN \"core_num\" = 2 THEN \"percent_usage\" END) AS \"core 2\",\r\n  AVG(CASE WHEN \"core_num\" = 3 THEN \"percent_usage\" END) AS \"core 3\",\r\n  AVG(CASE WHEN \"core_num\" = 4 THEN \"percent_usage\" END) AS \"core 4\",\r\n  AVG(CASE WHEN \"core_num\" = 5 THEN \"percent_usage\" END) AS \"core 5\",\r\n  AVG(CASE WHEN \"core_num\" = 6 THEN \"percent_usage\" END) AS \"core 6\",\r\n  AVG(CASE WHEN \"core_num\" = 7 THEN \"percent_usage\" END) AS \"core 7\"\r\n\r\nFROM \"cpu\"\r\nWHERE\r\n  \"time\" >= $__timeFrom AND \"time\" <= $__timeTo\r\nGROUP BY 1\r\nORDER BY 1;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [
+                  {
+                    "name": "core_num",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              },
+              {
+                "parameters": [
+                  {
+                    "name": "percent_usage",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              },
+              {
+                "parameters": [
+                  {
+                    "name": "time",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "name": "core_num",
+                  "type": "string"
+                },
+                "type": "groupBy"
+              },
+              {
+                "property": {
+                  "name": "percent_usage",
+                  "type": "string"
+                },
+                "type": "groupBy"
+              },
+              {
+                "property": {
+                  "name": "time",
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "whereJsonTree": {
+              "children1": [
+                {
+                  "id": "9a9b9aab-4567-489a-bcde-f19c85f88018",
+                  "properties": {
+                    "field": "core_num",
+                    "fieldSrc": "field",
+                    "operator": "select_any_in",
+                    "value": [
+                      "$cpu_core_num"
+                    ],
+                    "valueError": [
+                      null
+                    ],
+                    "valueSrc": [
+                      "value"
+                    ],
+                    "valueType": [
+                      "text"
+                    ]
+                  },
+                  "type": "rule"
+                }
+              ],
+              "id": "b898aaba-0123-4456-b89a-b19c85edff0f",
+              "type": "group"
+            },
+            "whereString": "core_num IN ($cpu_core_num)"
+          },
+          "table": "cpu"
+        }
+      ],
+      "title": "CPU Usage Per Core",
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "refresh": "auto",
+  "schemaVersion": 40,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": [
+            "0"
+          ],
+          "value": [
+            "0"
+          ]
+        },
+        "definition": "SELECT DISTINCT core_num FROM cpu",
+        "description": "",
+        "includeAll": true,
+        "label": "Core",
+        "multi": true,
+        "name": "cpu_core_num",
+        "options": [],
+        "query": {
+          "query": "SELECT DISTINCT core_num FROM cpu",
+          "refId": "InfluxVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 3,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "0",
+          "value": "0"
+        },
+        "definition": "SELECT DISTINCT battery_index FROM battery",
+        "label": "battery",
+        "name": "batery_count",
+        "options": [],
+        "query": {
+          "query": "SELECT DISTINCT battery_index FROM battery",
+          "refId": "InfluxVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 2,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "CPU - prototype",
+  "uid": "dfe0tda9jwvswf",
+  "version": 4,
+  "weekStart": ""
+}

@@ -61,6 +61,18 @@ public class InfluxDbService
         
     }
 
+    public async Task WriteDiskUsageAsync(DiskUsageDto data)
+    {
+        var point = PointData
+        .Measurement("disk")
+        .SetTag("disk_name", data.Name)
+        .SetField("percent_usage",data.PercentUsage)
+        .SetTimestamp(DateTimeOffset.FromUnixTimeSeconds(data.Timestamp));
+
+        await _client.WritePointAsync(point);
+        
+    }
+
     public async Task<string> QuerySqlAsync(string sql)
     {
         Console.WriteLine($"SQL koji se izvrsava: {sql}");

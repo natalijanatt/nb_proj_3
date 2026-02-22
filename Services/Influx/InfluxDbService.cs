@@ -61,6 +61,20 @@ public class InfluxDbService
         
     }
 
+    public async Task WriteBatteryAsync(BatteryDto data)
+    {
+        var point = PointData
+            .Measurement("battery")
+            .SetTag("battery_index", data.BatteryIndex.ToString())
+            .SetField("percent_charge", data.EstimatedChargeRemaining)
+            .SetField("battery_status", data.BatteryStatus)
+            .SetField("estimated_run_time", data.EstimatedRunTime)
+            .SetField("time_to_full_charge", data.TimeToFullCharge)
+            .SetTimestamp(DateTimeOffset.FromUnixTimeSeconds(data.Timestamp));
+
+        await _client.WritePointAsync(point);
+    }
+
     public async Task<string> QuerySqlAsync(string sql)
     {
         Console.WriteLine($"SQL koji se izvrsava: {sql}");

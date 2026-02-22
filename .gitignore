@@ -71,3 +71,5 @@ coverage/
 *.swp
 *.bak
 *.cache
+
+/.claude/

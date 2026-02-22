@@ -27,6 +27,7 @@ builder.ConfigureServices(services =>
     services.AddSingleton<InfluxDbService>();
 
     services.AddSingleton<CpuProcessService>();
+    services.AddSingleton<BatteryProcessService>();
 
     services.AddHostedService<BackgroundWorkerService>();
 });

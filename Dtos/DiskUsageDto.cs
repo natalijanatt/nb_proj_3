@@ -2,7 +2,7 @@ namespace WorkspaceMonitor.Dtos;
 
 public record DiskUsageDto
 (
-    String Name,
+    string Name,
     double PercentUsage,
     long Timestamp
 );

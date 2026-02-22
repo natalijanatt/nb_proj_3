@@ -25,12 +25,11 @@ public class CpuProcessService : IProcessService
         
         Console.WriteLine("Processing CPU");
 
-        List<Task> coreProcesses = new();;
+        List<Task> coreProcesses = [];
         
         for (int coreNum = 0; coreNum < coreCount; coreNum++)
         {
             var task = ProcessCore(coreNum);
-            
         }
 
         await Task.WhenAll(coreProcesses.ToArray());

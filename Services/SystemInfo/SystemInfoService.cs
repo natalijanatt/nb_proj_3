@@ -8,7 +8,7 @@ public class SystemInfoService
     {
         hardwareInfo.RefreshAll();
         CpuCoreCount = hardwareInfo.CpuList.First().CpuCoreList.Count;
-        DiskCount= hardwareInfo.DriveList.Count;
+        DiskCount = hardwareInfo.DriveList.Count;
     }
 
     public int CpuCoreCount { get; }

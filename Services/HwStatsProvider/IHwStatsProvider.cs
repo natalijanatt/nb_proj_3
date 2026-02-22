@@ -7,5 +7,5 @@ public interface IHwStatsProvider
     void RefreshCpu();
 
     void RefreshDisk();
-    (double Usage, String Name) GetDiskUsage(int diskNum);
-    }
+    (double Usage, string Name) GetDiskUsageWithName(int diskNum);
+}

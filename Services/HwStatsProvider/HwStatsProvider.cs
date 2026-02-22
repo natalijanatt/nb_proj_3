@@ -1,6 +1,4 @@
-using System.CodeDom;
 using System.Net.NetworkInformation;
-using Apache.Arrow.C;
 using Hardware.Info;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -31,7 +29,7 @@ public class HwStatsProvider : IHwStatsProvider
         _hardwareInfo.RefreshDriveList();
     }
 
-    public (double Usage, String Name) GetDiskUsage(int diskNum)
+    public (double Usage, string Name) GetDiskUsageWithName(int diskNum)
     {
 
         if (diskNum < 0 || diskNum >= _hardwareInfo.DriveList.Count)

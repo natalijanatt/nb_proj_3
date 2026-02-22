@@ -61,6 +61,30 @@ public class InfluxDbService
         
     }
 
+    public async Task WriteRamUsageAsync(RamUsageDto data)
+    {
+        var point = PointData
+            .Measurement("ram")
+            .SetField("percent_usage", data.PercentUsage)
+            .SetTimestamp(DateTimeOffset.FromUnixTimeSeconds(data.Timestamp));
+        
+        await _client.WritePointAsync(point);
+    }
+
+    public async Task WriteBatteryAsync(BatteryDto data)
+    {
+        var point = PointData
+            .Measurement("battery")
+            .SetTag("battery_index", data.BatteryIndex.ToString())
+            .SetField("percent_charge", data.EstimatedChargeRemaining)
+            .SetField("battery_status", data.BatteryStatus)
+            .SetField("estimated_run_time", data.EstimatedRunTime)
+            .SetField("time_to_full_charge", data.TimeToFullCharge)
+            .SetTimestamp(DateTimeOffset.FromUnixTimeSeconds(data.Timestamp));
+
+        await _client.WritePointAsync(point);
+    }
+
     public async Task WriteDiskUsageAsync(DiskUsageDto data)
     {
         var point = PointData

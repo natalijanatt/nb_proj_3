@@ -285,9 +285,10 @@
       "targets": [
         {
           "dataset": "iox",
-          "editorMode": "builder",
+          "editorMode": "code",
           "format": "table",
-          "rawSql": "SELECT AVG(\"percent_usage\") FROM \"cpu\" WHERE \"time\" >= $__timeFrom AND \"time\" <= $__timeTo ",
+          "rawQuery": true,
+          "rawSql": "SELECT AVG(\"percent_usage\") FROM \"cpu\" WHERE \"time\" >= NOW() - INTERVAL '5 SECOND'",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1430,6 +1431,6 @@
   "timezone": "browser",
   "title": "CPU - prototype",
   "uid": "dfe0tda9jwvswf",
-  "version": 10,
+  "version": 1,
   "weekStart": ""
 }

@@ -5,6 +5,9 @@ public interface IHwStatsProvider
     ulong GetCpuCorePercentUsage(int coreNum);
 
     void RefreshCpu();
+    
+    double GetRamUsage();
+    void RefreshRam();
 
     void RefreshBattery();
 

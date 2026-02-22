@@ -10,6 +10,7 @@ public class BackgroundWorkerService : BackgroundService
 
     public BackgroundWorkerService(
         CpuProcessService cpuProcessService,
+        RamProcessService ramProcessService,
         BatteryProcessService batteryProcessService
         )
     {
@@ -17,6 +18,7 @@ public class BackgroundWorkerService : BackgroundService
 
         _processServices.Add(cpuProcessService);
         _processServices.Add(batteryProcessService);
+        _processServices.Add(ramProcessService);
     }
     
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

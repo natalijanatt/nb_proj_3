@@ -22,6 +22,21 @@ public class HwStatsProvider : IHwStatsProvider
         _hardwareInfo.RefreshCPUList();
     }
 
+    public double GetRamUsage()
+    {  
+        var available = _hardwareInfo.MemoryStatus.AvailablePhysical;
+        var total = _hardwareInfo.MemoryStatus.TotalPhysical;
+        
+        var usage = (1.0 - available / (double)total) * 100.0;
+        
+        return Math.Round(usage, 2);
+    }
+
+    public void RefreshRam()
+    {
+        _hardwareInfo.RefreshMemoryStatus();
+    }
+
     public void RefreshBattery()
     {
         _hardwareInfo.RefreshBatteryList();

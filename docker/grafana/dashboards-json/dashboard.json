@@ -1,0 +1,276 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P2A13252C41BAC6F2"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "displayName": "${__field.labels.core}",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.0",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P2A13252C41BAC6F2"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  date_bin(\r\n    INTERVAL '5 seconds',\r\n    \"time\",\r\n    TIMESTAMP '1970-01-01T00:00:00Z'\r\n  ) AS \"time\",\r\n  CONCAT('Core ', LPAD(CAST(\"core_num\" AS VARCHAR), 2, '0')) AS \"core\",\r\n  AVG(\"percent_usage\") AS \"value\"\r\nFROM \"cpu\"\r\nWHERE\r\n  \"time\" >= $__timeFrom\r\n  AND \"time\" <= $__timeTo\r\n  AND \"core_num\" IN (${cpu_core_num:csv})\r\nGROUP BY 1, 2\r\nORDER BY 1, 2;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [
+                  {
+                    "name": "core_num",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              },
+              {
+                "parameters": [
+                  {
+                    "name": "percent_usage",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              },
+              {
+                "parameters": [
+                  {
+                    "name": "time",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "name": "core_num",
+                  "type": "string"
+                },
+                "type": "groupBy"
+              },
+              {
+                "property": {
+                  "name": "percent_usage",
+                  "type": "string"
+                },
+                "type": "groupBy"
+              },
+              {
+                "property": {
+                  "name": "time",
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "whereJsonTree": {
+              "children1": [
+                {
+                  "id": "9a9b9aab-4567-489a-bcde-f19c85f88018",
+                  "properties": {
+                    "field": "core_num",
+                    "fieldSrc": "field",
+                    "operator": "select_any_in",
+                    "value": [
+                      "$cpu_core_num"
+                    ],
+                    "valueError": [
+                      null
+                    ],
+                    "valueSrc": [
+                      "value"
+                    ],
+                    "valueType": [
+                      "text"
+                    ]
+                  },
+                  "type": "rule"
+                }
+              ],
+              "id": "b898aaba-0123-4456-b89a-b19c85edff0f",
+              "type": "group"
+            },
+            "whereString": "core_num IN ($cpu_core_num)"
+          },
+          "table": "cpu"
+        }
+      ],
+      "title": "CPU Usage Per Core",
+      "transformations": [
+        {
+          "id": "prepareTimeSeries",
+          "options": {
+            "format": "multi"
+          }
+        }
+      ],
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "refresh": "auto",
+  "schemaVersion": 40,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": [
+            "0"
+          ],
+          "value": [
+            "0"
+          ]
+        },
+        "definition": "SELECT DISTINCT core_num FROM cpu",
+        "description": "",
+        "includeAll": true,
+        "label": "Core",
+        "multi": true,
+        "name": "cpu_core_num",
+        "options": [],
+        "query": {
+          "query": "SELECT DISTINCT core_num FROM cpu",
+          "refId": "InfluxVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 3,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "0",
+          "value": "0"
+        },
+        "definition": "SELECT DISTINCT battery_index FROM battery",
+        "label": "battery",
+        "name": "batery_count",
+        "options": [],
+        "query": {
+          "query": "SELECT DISTINCT battery_index FROM battery",
+          "refId": "InfluxVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 2,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "CPU - prototype",
+  "uid": "dfe0tda9jwvswf",
+  "version": 5,
+  "weekStart": ""
+}

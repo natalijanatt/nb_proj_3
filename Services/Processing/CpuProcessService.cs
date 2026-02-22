@@ -29,7 +29,7 @@ public class CpuProcessService : IProcessService
         
         for (int coreNum = 0; coreNum < coreCount; coreNum++)
         {
-            var task = ProcessCore(coreNum);
+            coreProcesses.Add(ProcessCore(coreNum));
         }
 
         await Task.WhenAll(coreProcesses.ToArray());

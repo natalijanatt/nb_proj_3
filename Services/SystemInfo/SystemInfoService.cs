@@ -9,8 +9,10 @@ public class SystemInfoService
         hardwareInfo.RefreshAll();
         CpuCoreCount = hardwareInfo.CpuList.First().CpuCoreList.Count;
         BatteryCount = hardwareInfo.BatteryList.Count;
+        DiskCount = hardwareInfo.DriveList.Count;
     }
 
     public int CpuCoreCount { get; }
     public int BatteryCount { get; }
+    public int DiskCount { get; }
 }

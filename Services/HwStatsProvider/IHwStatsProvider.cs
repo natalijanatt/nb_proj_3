@@ -18,4 +18,7 @@ public interface IHwStatsProvider
     uint GetBatteryEstimatedRunTime(int index);
 
     uint GetBatteryTimeToFullCharge(int index);
+
+    void RefreshDisk();
+    (double Usage, string Name) GetDiskUsageWithName(int diskNum);
 }

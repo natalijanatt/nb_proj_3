@@ -30,6 +30,7 @@ builder.ConfigureServices(services =>
     services.AddSingleton<RamProcessService>();
     services.AddSingleton<BatteryProcessService>();
     services.AddSingleton<DiskProcessService>();
+    services.AddSingleton<NetworkProcessService>();
 
     services.AddHostedService<BackgroundWorkerService>();
 });

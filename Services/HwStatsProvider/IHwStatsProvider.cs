@@ -21,4 +21,8 @@ public interface IHwStatsProvider
 
     void RefreshDisk();
     (double Usage, string Name) GetDiskUsageWithName(int diskNum);
+
+    void RefreshNetwork();
+    int GetNetworkAdapterCount();
+    (ulong BytesReceivedPerSec, ulong BytesSentPerSec, string Name) GetNetworkAdapterStats(int index);
 }

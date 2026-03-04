@@ -33,9 +33,9 @@ usernam: admin
 password: admin12345
 ```
 
-U sekciji _Dashboards_ nalazi se **_Workspace Monitor_**.
+U sekciji _Dashboards_ nalazi se **_Workspace Monitor_**, ili direktno: [Workspace Monitor Dashboard](http://localhost:3000/d/dfe0tda9jwvswf/workspace-monitor?var-cpu_core_num=$__all)
 
-Tu se nalaze svi grafikoni za prikaz podataka o sistemu u relanom vremenu.
+Tu se nalaze svi grafikoni za prikaz podataka o sistemu u realnom vremenu.
 
 ## Struktura
 

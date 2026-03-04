@@ -85,6 +85,18 @@ public class InfluxDbService
         await _client.WritePointAsync(point);
     }
 
+    public async Task WriteNetworkUsageAsync(NetworkUsageDto data)
+    {
+        var point = PointData
+            .Measurement("network")
+            .SetTag("adapter_name", data.AdapterName)
+            .SetField("bytes_received_per_sec", data.BytesReceivedPerSec)
+            .SetField("bytes_sent_per_sec", data.BytesSentPerSec)
+            .SetTimestamp(DateTimeOffset.FromUnixTimeSeconds(data.Timestamp));
+
+        await _client.WritePointAsync(point);
+    }
+
     public async Task WriteDiskUsageAsync(DiskUsageDto data)
     {
         var point = PointData

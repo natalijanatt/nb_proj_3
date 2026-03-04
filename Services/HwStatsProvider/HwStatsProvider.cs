@@ -8,10 +8,17 @@ namespace WorkspaceMonitor.Services.HwStatsProvider;
 public class HwStatsProvider : IHwStatsProvider
 {
     private readonly HardwareInfo _hardwareInfo;
+    private readonly HashSet<string> _physicalAdapterNames;
 
     public HwStatsProvider(HardwareInfo hardwareInfo)
     {
         _hardwareInfo = hardwareInfo;
+        _physicalAdapterNames = NetworkInterface.GetAllNetworkInterfaces()
+            .Where(ni => ni.NetworkInterfaceType != NetworkInterfaceType.Loopback
+                      && ni.NetworkInterfaceType != NetworkInterfaceType.Tunnel
+                      && ni.OperationalStatus == OperationalStatus.Up)
+            .Select(ni => ni.Name)
+            .ToHashSet();
     }
 
     public ulong GetCpuCorePercentUsage(int coreNum)
@@ -69,6 +76,24 @@ public class HwStatsProvider : IHwStatsProvider
         _hardwareInfo.RefreshDriveList();
     }
 
+    public void RefreshNetwork()
+    {
+        _hardwareInfo.RefreshNetworkAdapterList(includeBytesPerSec: true);
+    }
+
+    public int GetNetworkAdapterCount()
+    {
+        return _hardwareInfo.NetworkAdapterList
+            .Count(a => _physicalAdapterNames.Contains(a.NetConnectionID));
+    }
+
+    public (ulong BytesReceivedPerSec, ulong BytesSentPerSec, string Name) GetNetworkAdapterStats(int index)
+    {
+        var adapter = _hardwareInfo.NetworkAdapterList
+            .Where(a => _physicalAdapterNames.Contains(a.NetConnectionID))
+            .ToList()[index];
+        return (adapter.BytesReceivedPersec, adapter.BytesSentPersec, adapter.Name);
+    }
     public (double Usage, string Name,double UsageGB ) GetDiskUsageWithName(int diskNum)
     {
 

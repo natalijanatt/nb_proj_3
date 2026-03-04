@@ -103,6 +103,7 @@ public class InfluxDbService
         .Measurement("disk")
         .SetTag("disk_name", data.Name)
         .SetField("percent_usage",data.PercentUsage)
+        .SetField("GB_usage",data.GbUsage)
         .SetTimestamp(DateTimeOffset.FromUnixTimeSeconds(data.Timestamp));
 
         await _client.WritePointAsync(point);

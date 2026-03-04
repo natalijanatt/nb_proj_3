@@ -46,9 +46,9 @@ public class DiskProcessService : IProcessService
     {
         _logger.LogInformation($"Processing Disk {diskNum}");
 
-        var (usage, name) = _hwStatsProvider.GetDiskUsageWithName(diskNum);
+        var (usage, name,usageGB) = _hwStatsProvider.GetDiskUsageWithName(diskNum);
 
-        var dto = new DiskUsageDto(name, usage, DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+        var dto = new DiskUsageDto(name, usage, usageGB,DateTimeOffset.UtcNow.ToUnixTimeSeconds());
 
         await _influxDbService.WriteDiskUsageAsync(dto);
     }
